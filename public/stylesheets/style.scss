@@ -2,9 +2,22 @@
 
 // sup, custom styles go here -->
 
+// List view (makes images get a little bigger on hover)
 .recipe-card-list {
     &:hover {
         transform: scale(1.05);
         transition: transform 0.3s ease-in-out;
+    }
+}
+
+// control single recipe image size
+.recipe-image {
+    max-width: 65%;
+    height: auto;
+    border-radius: 10px;
+    transition: transform 0.3s ease-in-out;
+
+    &:hover {
+        transform: scale(1.05);
     }
 }
