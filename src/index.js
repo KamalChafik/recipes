@@ -10,7 +10,7 @@ app.use(express.static('public'));
 
 // Welcome route at "/"
 app.get('/', (req, res) => {
-    res.send('Welcome to the Recipe App!');
+    res.render('home');
 });
 
 // Use recipe routes under "/recipe"

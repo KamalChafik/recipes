@@ -3,15 +3,15 @@
 <section class="section">
     <div class="container">
         <!-- Search Bar Section -->
-        <div class="box mb-5">
+        <form action="/recipe/list" method="get" class="box mb-5">
             <div class="columns is-vcentered">
                 <div class="column is-two-thirds">
-                    <input class="input" type="text" placeholder="Search by recipe name...">
+                    <input class="input" type="text" name="name" placeholder="Search by recipe name...">
                 </div>
                 <div class="column">
                     <div class="select is-fullwidth">
-                        <select>
-                            <option value="">Select Category</option>
+                        <select name="category">
+                            <option value="">Category</option>
                             <% categories.forEach(category => { %>
                                 <option value="<%= category %>"><%= category %></option>
                             <% }) %>
@@ -20,37 +20,42 @@
                 </div>
                 <div class="column">
                     <div class="select is-fullwidth">
-                        <select>
-                            <option value="">Select Country</option>
+                        <select name="area">
+                            <option value="">Country</option>
                             <% countries.forEach(country => { %>
                                 <option value="<%= country %>"><%= country %></option>
                             <% }) %>
                         </select>
                     </div>
                 </div>
+                <div class="column is-narrow">
+                    <button type="submit" class="button is-primary">Search</button>
+                </div>
             </div>
-        </div>
+        </form>
 
         <!-- Recipes Cards Section -->
         <div class="columns is-multiline">
             <% recipes.forEach((meal, index) => { %>
                 <div class="column is-one-third">
-                    <div class="card">
-                        <div class="card-image">
-                            <figure class="image is-4by3">
-                                <img src="<%= meal.strMealThumb %>/preview" alt="<%= meal.strMeal %>">
-                            </figure>
-                        </div>
-                        <div class="card-content">
-                            <div class="media">
-                                <div class="media-content has-text-centered">
-                                    <p class="title is-5"><%= meal.strMeal %></p>
-                                    <p class="subtitle is-6"><strong>Category:</strong> <%= meal.strCategory %></p>
-                                    <p class="subtitle is-6"><strong>Origin:</strong> <%= meal.strArea %></p>
+                    <a href="/recipe/<%= meal.idMeal %>">
+                        <div class="card">
+                            <div class="card-image">
+                                <figure class="image is-4by3">
+                                    <img src="<%= meal.strMealThumb %>/preview" alt="<%= meal.strMeal %>">
+                                </figure>
+                            </div>
+                            <div class="card-content">
+                                <div class="media">
+                                    <div class="media-content has-text-centered">
+                                        <p class="title is-5"><%= meal.strMeal %></p>
+                                        <p class="subtitle is-6"><strong>Category:</strong> <%= meal.strCategory %></p>
+                                        <p class="subtitle is-6"><strong>Origin:</strong> <%= meal.strArea %></p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             <% }) %>
         </div>

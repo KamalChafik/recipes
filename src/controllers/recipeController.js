@@ -34,7 +34,6 @@ export const getRecipeById = async (req, res) => {
         const { id } = req.params;
         console.log(`[server]: GET /recipe/${id}`)
         const response = await fetchData(`${BASE_URL}/lookup.php?i=${id}`);
-        console.log(response)
         const meal = response.meals[0];
 
         if (meal) {
@@ -47,5 +46,50 @@ export const getRecipeById = async (req, res) => {
         }
     } catch (error) {
         res.status(500).send('Error fetching recipe data');
+    }
+};
+
+// Get Recipe List with optional filters
+export const getRecipeList = async (req, res) => {
+    console.log(`[server]: GET /recipe/list`)
+    try {
+        const { category, area, name } = req.query;
+        let recipes = [];
+
+        // Fetch categories and areas for dropdowns
+        const [categoriesResponse, areasResponse] = await Promise.all([
+            fetchData(`${BASE_URL}/list.php?c=list`),
+            fetchData(`${BASE_URL}/list.php?a=list`)
+        ]);
+        const categories = categoriesResponse.meals.map(meal => meal.strCategory);
+        const areas = areasResponse.meals.map(meal => meal.strArea);
+
+        // Fetch data for each filter if it exists
+        const fetchPromises = [];
+        if (name) {
+            fetchPromises.push(fetchData(`${BASE_URL}/search.php?s=${name}`));
+        }
+        if (category) {
+            fetchPromises.push(fetchData(`${BASE_URL}/filter.php?c=${category}`));
+        }
+        if (area) {
+            fetchPromises.push(fetchData(`${BASE_URL}/filter.php?a=${area}`));
+        }
+
+        // gotta get them all
+        if (fetchPromises.length > 0) {
+            const results = await Promise.all(fetchPromises);
+
+            // fun croos referencing...
+            recipes = results[0].meals || [];
+            for (let i = 1; i < results.length; i++) {
+                const meals = results[i].meals || [];
+                recipes = recipes.filter(meal => meals.some(filteredMeal => filteredMeal.idMeal === meal.idMeal));
+            }
+        }
+
+        res.render('list', { recipes, categories, countries: areas });
+    } catch (error) {
+        res.status(500).send('Error fetching recipe list');
     }
 };
