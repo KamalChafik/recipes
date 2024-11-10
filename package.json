@@ -1,0 +1,21 @@
+{
+  "name": "recipes",
+  "version": "1.0.0",
+  "description": "recipes app",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "test": "test",
+    "dev": "nodemon src/index.js",
+    "build-css": "sass --style=compressed public/stylesheets/style.scss public/stylesheets/style.css"
+  },
+  "author": "kamal ch",
+  "license": "ISC",
+  "dependencies": {
+    "bulma": "^1.0.2",
+    "ejs": "^3.1.10",
+    "express": "^4.21.1",
+    "nodemon": "^3.1.7",
+    "sass": "^1.80.6"
+  }
+}
